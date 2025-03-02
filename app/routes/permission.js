@@ -5,27 +5,31 @@ const {
   updatePermission,
   deletePermission,
   getAllPermissions,
-} = require("../service/permission");
+} = require("../controllers/permission");
 
 router.post("/", async (req, res) => {
-  const { name, api, createdBy } = req.body;
-  return await createPermission(name, api, createdBy);
+  const response = await createPermission(req.body, req.currentUser.userName);
+  return res.status(response.statusCode).json(response.toJSON());
 });
 
 router.get("/:id", async (req, res) => {
-  return await getPermission(parseInt(req.params.id));
+  const response = await getPermission(parseInt(req.params.id));
+  return res.status(response.statusCode).json(response.toJSON());
 });
 
 router.put("/:id", async (req, res) => {
-  return await updatePermission(parseInt(req.params.id), req.body);
+  const response = await updatePermission(parseInt(req.params.id), req.body);
+  return res.status(response.statusCode).json(response.toJSON());
 });
 
 router.delete("/:id", async (req, res) => {
-  return await deletePermission(parseInt(req.params.id));
+  const response = await deletePermission(parseInt(req.params.id));
+  return res.status(response.statusCode).json(response.toJSON());
 });
 
 router.get("/", async (req, res) => {
-  return await getAllPermissions();
+  const response = await getAllPermissions();
+  return res.status(response.statusCode).json(response.toJSON());
 });
 
 module.exports = router;

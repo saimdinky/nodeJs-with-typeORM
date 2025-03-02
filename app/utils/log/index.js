@@ -11,7 +11,7 @@ const setupLogger = () => {
         type: "stdout",
         layout: {
           type: "pattern",
-          pattern: "%[ %d{dd-MM-yyyy HH:mm:ss} %p %x{user} %l %f{4} %m %] %n",
+          pattern: "%[ %d{dd-MM-yyyy hh:mm:ss} %p %x{user} %l %f{4} %m %] %n",
           tokens: {
             user: () => currentUser,
           },

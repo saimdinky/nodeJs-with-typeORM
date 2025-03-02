@@ -47,7 +47,7 @@ async function startServer() {
       log.info("✅ Server Listening on port 3000");
     });
   } catch (error) {
-    console.error("❌ Error connecting to database:", error);
+    log.error("❌ Error connecting to database:", error);
     process.exit(1); // Exit process if DB connection fails
   }
 }

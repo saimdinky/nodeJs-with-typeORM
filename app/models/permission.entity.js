@@ -6,7 +6,6 @@ const {
   CreateDateColumn,
   UpdateDateColumn,
 } = require("typeorm");
-const { Role } = require("./role.entity");
 
 @Entity({ name: "permission" })
 class Permission {
@@ -28,7 +27,7 @@ class Permission {
   @Column({ type: "boolean", default: false })
   deleted;
 
-  @ManyToMany(() => Role, (role) => role.permissions)
+  @ManyToMany(() => require("./role.entity").Role, (role) => role.permissions)
   roles;
 
   @CreateDateColumn()

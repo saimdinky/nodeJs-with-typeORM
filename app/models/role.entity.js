@@ -7,8 +7,6 @@ const {
   CreateDateColumn,
   UpdateDateColumn,
 } = require("typeorm");
-const { User } = require("./user.entity");
-const { Permission } = require("./permission.entity");
 
 @Entity({ name: "roles" })
 class Role {
@@ -27,7 +25,7 @@ class Role {
   @Column({ type: "boolean", default: false })
   deleted;
 
-  @ManyToMany(() => User, (user) => user.roles)
+  @ManyToMany(() => require("./user.entity").User, (user) => user.roles)
   @JoinTable({
     name: "user_roles",
     joinColumn: { name: "roleId", referencedColumnName: "id" },
@@ -35,7 +33,10 @@ class Role {
   })
   users;
 
-  @ManyToMany(() => Permission, (permission) => permission.roles)
+  @ManyToMany(
+    () => require("./permission.entity").Permission,
+    (permission) => permission.roles
+  )
   @JoinTable({
     name: "role_permissions",
     joinColumn: { name: "roleId", referencedColumnName: "id" },

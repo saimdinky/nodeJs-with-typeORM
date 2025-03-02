@@ -1,6 +1,6 @@
 const { Entity, Column, PrimaryGeneratedColumn } = require("typeorm");
 
-@Entity({ name: "client_tokens" })
+@Entity({ name: "client_token" })
 class ClientToken {
   @PrimaryGeneratedColumn()
   id;

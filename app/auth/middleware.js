@@ -112,7 +112,7 @@ const handleBearer = async ({ token, req, res, next }) => {
     next();
   } catch (error) {
     log.error(`❌ Bearer auth error: ${error.message}`);
-    next(error);
+    return res.status(401).json({ error: error.message });
   }
 };
 

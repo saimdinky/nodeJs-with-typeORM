@@ -34,7 +34,7 @@ const authorizer = async (req, res, next) => {
     }
   } catch (error) {
     log.error(`❌ Authentication error: ${error.message}`);
-    next(error);
+    return res.status(401).json({ error: error.message });
   }
 };
 
@@ -71,7 +71,7 @@ const handleAuthRoutes = async ({ token, req, res, next }) => {
     next();
   } catch (err) {
     log.error(`❌ Basic auth exception: ${err.message}`);
-    next(err);
+    return res.status(401).json({ error: err.message });
   }
 };
 

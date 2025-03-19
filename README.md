@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # Node Express JS Base Setup
 
 ## Description

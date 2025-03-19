@@ -1,5 +1,5 @@
-const { AppDataSource } = require("../db/index");
-const { Permission } = require("../models/index");
+const { AppDataSource } = require('../db/index');
+const { Permission } = require('../models/index');
 
 async function create(name, api, createdBy) {
   const permRepo = AppDataSource.getRepository(Permission);

@@ -1,4 +1,4 @@
-const { DataSource } = require("typeorm");
+const { DataSource } = require('typeorm');
 
 const AppDataSource = new DataSource({
   type: process.env.DB_TYPE,
@@ -7,9 +7,9 @@ const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ["app/models/*.entity.js"],
+  entities: ['app/models/*.entity.js'],
   synchronize:
-    process.env.NODE_ENV !== "production" && process.env.DB_TYPE === "mysql",
+    process.env.NODE_ENV !== 'production' && process.env.DB_TYPE === 'mysql',
   logging: false,
 });
 

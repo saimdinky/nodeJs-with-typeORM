@@ -7,40 +7,40 @@ const {
   UpdateDateColumn,
   BeforeInsert,
   BeforeUpdate,
-} = require("typeorm");
-const { Role } = require("./role.entity");
-const bcrypt = require("bcrypt");
+} = require('typeorm');
+const { Role } = require('./role.entity');
+const bcrypt = require('bcrypt');
 
-@Entity({ name: "users" })
+@Entity({ name: 'users' })
 class User {
   @PrimaryGeneratedColumn()
   id;
 
-  @Column({ type: "varchar", length: 100, nullable: false, unique: true })
+  @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
   userName;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   firstName;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   lastName;
 
-  @Column({ type: "varchar", length: 50, nullable: false, unique: true })
+  @Column({ type: 'varchar', length: 50, nullable: false, unique: true })
   email;
 
-  @Column({ type: "varchar", length: 100, nullable: false, select: false })
+  @Column({ type: 'varchar', length: 100, nullable: false, select: false })
   password;
 
-  @Column({ type: "boolean", default: true })
+  @Column({ type: 'boolean', default: true })
   enable;
 
-  @Column({ type: "boolean", default: false })
+  @Column({ type: 'boolean', default: false })
   deleted;
 
-  @Column({ type: "varchar", length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   phone;
 
-  @Column({ type: "varchar", length: 20, nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   status;
 
   @ManyToMany(() => Role, (role) => role.users)

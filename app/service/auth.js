@@ -1,8 +1,8 @@
-const { AppDataSource } = require("../db/index");
-const { ClientToken, User } = require("../models/index");
-const jwt = require("jsonwebtoken");
-const { compareSync } = require("bcrypt");
-const { logger: log, logger } = require("../utils/log/index");
+const { AppDataSource } = require('../db/index');
+const { ClientToken, User } = require('../models/index');
+const jwt = require('jsonwebtoken');
+const { compareSync } = require('bcrypt');
+const { logger: log, logger } = require('../utils/log/index');
 
 async function signup(userData) {
   const userRepo = AppDataSource.getRepository(User);
@@ -19,9 +19,9 @@ async function signup(userData) {
 async function login(email, password) {
   const userRepo = AppDataSource.getRepository(User);
   const user = await userRepo.findOne({
-    where: { email, enable: true, deleted: false, status: "active" },
-    select: ["id", "email", "password", "userName"],
-    relations: ["roles", "roles.permissions"],
+    where: { email, enable: true, deleted: false, status: 'active' },
+    select: ['id', 'email', 'password', 'userName'],
+    relations: ['roles', 'roles.permissions'],
   });
   log.info(user.roles[0].name);
   const passwordIsValid = compareSync(password, user.password);
@@ -35,7 +35,7 @@ async function login(email, password) {
   };
   //   log.info(data);
   const token = jwt.sign({ user: data }, process.env.JWT_SECRET, {
-    expiresIn: "12h",
+    expiresIn: '12h',
   });
 
   return {
@@ -48,7 +48,7 @@ async function getUserDetailsByToken(token) {
   const clientTokenRepo = AppDataSource.getRepository(ClientToken);
   const clientToken = await clientTokenRepo.findOne({
     where: { token },
-    relations: ["user", "user.roles"],
+    relations: ['user', 'user.roles'],
   });
   return clientToken ? { user: clientToken.user } : null;
 }

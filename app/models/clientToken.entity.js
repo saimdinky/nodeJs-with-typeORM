@@ -1,20 +1,20 @@
-const { Entity, Column, PrimaryGeneratedColumn } = require("typeorm");
+const { Entity, Column, PrimaryGeneratedColumn } = require('typeorm');
 
-@Entity({ name: "client_token" })
+@Entity({ name: 'client_token' })
 class ClientToken {
   @PrimaryGeneratedColumn()
   id;
 
-  @Column({ type: "varchar", length: 255, unique: true })
+  @Column({ type: 'varchar', length: 255, unique: true })
   token;
 
-  @Column({ type: "varchar", length: 100 })
+  @Column({ type: 'varchar', length: 100 })
   clientName;
 
-  @Column({ type: "boolean", default: true })
+  @Column({ type: 'boolean', default: true })
   active;
 
-  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt;
 }
 

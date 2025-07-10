@@ -5,6 +5,7 @@ const {
   updateRole,
   deleteRole,
   getAllRoles,
+  getActiveRolesOnly,
 } = require('../controllers/role');
 
 router.post('/', async (req, res) => {
@@ -28,7 +29,36 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const response = await getAllRoles();
+  const page = req.query.page ? parseInt(req.query.page) : null;
+  const limit = req.query.limit ? parseInt(req.query.limit) : null;
+
+  if ((page && page < 1) || (limit && limit < 1)) {
+    return res.status(400).json({
+      status: 'error',
+      statusCode: 400,
+      message: 'Page and limit must be positive numbers',
+      data: null,
+    });
+  }
+
+  const response = await getAllRoles(page, limit);
+  return res.status(response.statusCode).json(response.toJSON());
+});
+
+router.get('/active', async (req, res) => {
+  const page = req.query.page ? parseInt(req.query.page) : null;
+  const limit = req.query.limit ? parseInt(req.query.limit) : null;
+
+  if ((page && page < 1) || (limit && limit < 1)) {
+    return res.status(400).json({
+      status: 'error',
+      statusCode: 400,
+      message: 'Page and limit must be positive numbers',
+      data: null,
+    });
+  }
+
+  const response = await getActiveRolesOnly(page, limit);
   return res.status(response.statusCode).json(response.toJSON());
 });
 

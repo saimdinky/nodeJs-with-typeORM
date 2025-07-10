@@ -1,44 +1,57 @@
-const { AppDataSource } = require('../db/index');
-const { Permission } = require('../models/index');
+const { PermissionRepository } = require('../repositories/index');
+
+// Initialize repository once
+const permissionRepo = new PermissionRepository();
 
 async function create(name, api, createdBy) {
-  const permRepo = AppDataSource.getRepository(Permission);
-  const permission = new Permission();
-  permission.name = name;
-  permission.api = api;
-  permission.createdBy = createdBy;
-  return await permRepo.save(permission);
+  return await permissionRepo.create({ name, api, createdBy });
 }
 
 async function getById(id) {
-  const permRepo = AppDataSource.getRepository(Permission);
-  return await permRepo.findOne({ where: { id } });
+  return await permissionRepo.findById(id);
 }
 
 async function update(id, updates) {
-  const permRepo = AppDataSource.getRepository(Permission);
-  const permission = await permRepo.findOne({ where: { id } });
-  if (!permission) return null;
-  Object.assign(permission, updates);
-  return await permRepo.save(permission);
-}
-
-async function remove(id) {
-  const permRepo = AppDataSource.getRepository(Permission);
-  const permission = await permRepo.findOne({ where: { id } });
-  if (!permission) return null;
-  return await permRepo.remove(permission);
+  return await permissionRepo.update(id, updates);
 }
 
 async function getAll() {
-  const permRepo = AppDataSource.getRepository(Permission);
-  return await permRepo.find();
+  return await permissionRepo.findAll();
+}
+
+async function getAllPaginated(page = 1, limit = 10) {
+  return await permissionRepo.findAllWithPagination(page, limit);
+}
+
+async function getActivePermissions() {
+  return await permissionRepo.findActivePermissions();
+}
+
+async function getActivePermissionsPaginated(page = 1, limit = 10) {
+  return await permissionRepo.findActivePermissionsPaginated(page, limit);
+}
+
+async function permissionExists(name) {
+  return await permissionRepo.permissionExists(name);
+}
+
+async function apiExists(api) {
+  return await permissionRepo.apiExists(api);
+}
+
+async function softDelete(id) {
+  return await permissionRepo.softDelete(id);
 }
 
 module.exports = {
   create,
   getById,
   update,
-  remove,
   getAll,
+  getAllPaginated,
+  getActivePermissions,
+  getActivePermissionsPaginated,
+  permissionExists,
+  apiExists,
+  softDelete,
 };

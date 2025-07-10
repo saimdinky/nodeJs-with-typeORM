@@ -5,6 +5,9 @@ const {
   update,
   remove,
   getAll,
+  getAllPaginated,
+  getActivePermissions,
+  getActivePermissionsPaginated,
 } = require('../service/permission');
 const Response = require('../utils/res/index');
 
@@ -88,10 +91,29 @@ async function deletePermission(id) {
   }
 }
 
-async function getAllPermissions() {
+async function getAllPermissions(page, limit, useActiveOnly = false) {
   try {
     log.info('🔍 Fetching all permissions');
-    const permissions = await getAll();
+
+    if (page && limit) {
+      const paginatedResult = useActiveOnly
+        ? await getActivePermissionsPaginated(page, limit)
+        : await getAllPaginated(page, limit);
+
+      log.info(
+        `✅ Fetched ${paginatedResult.data.length} permissions (Page ${page}/${paginatedResult.pagination.totalPages})`,
+      );
+      return new Response(
+        'success',
+        200,
+        'Permissions fetched successfully',
+        paginatedResult,
+      );
+    }
+
+    const permissions = useActiveOnly
+      ? await getActivePermissions()
+      : await getAll();
     log.info(`✅ Fetched ${permissions.length} permissions`);
     return new Response(
       'success',
@@ -105,10 +127,15 @@ async function getAllPermissions() {
   }
 }
 
+async function getActivePermissionsOnly(page, limit) {
+  return await getAllPermissions(page, limit, true);
+}
+
 module.exports = {
   createPermission,
   getPermission,
   updatePermission,
   deletePermission,
   getAllPermissions,
+  getActivePermissionsOnly,
 };

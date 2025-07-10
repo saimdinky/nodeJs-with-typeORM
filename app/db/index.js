@@ -1,3 +1,4 @@
+require('dotenv').config({ path: 'app/.env' });
 const { DataSource } = require('typeorm');
 
 const AppDataSource = new DataSource({

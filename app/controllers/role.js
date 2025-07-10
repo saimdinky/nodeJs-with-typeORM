@@ -1,7 +1,16 @@
 const { AppDataSource } = require('../db/index');
 const { Role } = require('../models/index');
 const { logger: log } = require('../utils/log/index');
-const { create, update, remove, getAll, getById } = require('../service/role');
+const {
+  create,
+  update,
+  remove,
+  getAll,
+  getAllPaginated,
+  getActiveRoles,
+  getActiveRolesPaginated,
+  getById,
+} = require('../service/role');
 const Response = require('../utils/res/index');
 
 async function createRole({ name, permissions = [] }, createdBy = 'SYSTEM') {
@@ -65,14 +74,31 @@ async function deleteRole(id) {
     return new Response('success', 200, 'Role deleted successfully', null);
   } catch (error) {
     log.error(`❌ Error deleting role: ${error.message}`);
-    return new Response('error W', 500, 'Failed to delete role', null);
+    return new Response('error W', 500, 'Failed to delete role', null);
   }
 }
 
-async function getAllRoles() {
+async function getAllRoles(page, limit, useActiveOnly = false) {
   try {
     log.info('🔍 Fetching all roles');
-    const roles = await getAll();
+
+    if (page && limit) {
+      const paginatedResult = useActiveOnly
+        ? await getActiveRolesPaginated(page, limit)
+        : await getAllPaginated(page, limit);
+
+      log.info(
+        `✅ Fetched ${paginatedResult.data.length} roles (Page ${page}/${paginatedResult.pagination.totalPages})`,
+      );
+      return new Response(
+        'success',
+        200,
+        'Roles fetched successfully',
+        paginatedResult,
+      );
+    }
+
+    const roles = useActiveOnly ? await getActiveRoles() : await getAll();
     log.info(`✅ Fetched ${roles.length} roles`);
     return new Response('success', 200, 'Roles fetched successfully', roles);
   } catch (error) {
@@ -81,4 +107,15 @@ async function getAllRoles() {
   }
 }
 
-module.exports = { createRole, getRole, updateRole, deleteRole, getAllRoles };
+async function getActiveRolesOnly(page, limit) {
+  return await getAllRoles(page, limit, true);
+}
+
+module.exports = {
+  createRole,
+  getRole,
+  updateRole,
+  deleteRole,
+  getAllRoles,
+  getActiveRolesOnly,
+};

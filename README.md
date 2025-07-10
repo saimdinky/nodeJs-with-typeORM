@@ -5,6 +5,7 @@
 [![TypeORM](https://img.shields.io/badge/TypeORM-0.3.x-orange.svg)](https://typeorm.io/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg)](https://www.mysql.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://www.docker.com/)
+[![Babel](https://img.shields.io/badge/Babel-7.x-yellow.svg)](https://babeljs.io/)
 
 A production-ready RESTful API built with Node.js, Express, and TypeORM, featuring clean architecture with Repository Pattern, comprehensive pagination, JWT authentication, and Docker containerization.
 
@@ -20,6 +21,7 @@ A production-ready RESTful API built with Node.js, Express, and TypeORM, featuri
 - **🔄 Hot Reload**: Development environment with automatic code reloading
 - **📚 Comprehensive API**: RESTful endpoints with proper error handling
 - **🛡️ Security Best Practices**: Non-root containers, input validation, secure headers
+- **⚡ Babel Transpilation**: Modern JavaScript with TypeORM decorator support
 
 ## 📋 Table of Contents
 
@@ -41,9 +43,33 @@ A production-ready RESTful API built with Node.js, Express, and TypeORM, featuri
 - **Database**: MySQL 8.0 with TypeORM
 - **Authentication**: JWT (JSON Web Tokens)
 - **Architecture**: Repository Pattern, Service Layer
+- **Transpilation**: Babel 7.x with TypeORM decorator support
 - **Containerization**: Docker, Docker Compose
 - **Development**: Hot reload, Health checks
 - **Security**: bcrypt password hashing, CORS, input validation
+
+### Babel Configuration
+
+The project uses Babel for modern JavaScript transpilation with specific plugins for TypeORM:
+
+```json
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-transform-class-properties", { "loose": true }],
+    ["@babel/plugin-transform-private-methods", { "loose": true }],
+    ["@babel/plugin-transform-private-property-in-object", { "loose": true }]
+  ]
+}
+```
+
+**Key Features:**
+
+- **@babel/preset-env**: Modern JavaScript syntax support
+- **Decorators Plugin**: Enables TypeORM entity decorators (`@Entity`, `@Column`, etc.)
+- **Class Properties**: Support for class field declarations
+- **Private Methods**: Modern class private method syntax
 
 ## ⚡ Quick Start
 
@@ -274,6 +300,7 @@ GET /api/roles
 ├── 📄 docker-compose.yml       # Development Docker setup
 ├── 📄 DOCKER.md               # Docker documentation
 ├── 📄 .dockerignore           # Docker ignore file
+├── 📄 .babelrc                # Babel configuration
 └── 📄 README.md               # This file
 ```
 
@@ -447,8 +474,14 @@ This project is licensed under the ISC License.
    - Kill existing process: `lsof -ti:3000 | xargs kill`
 
 3. **Permission Denied**:
+
    - Check file permissions
    - Ensure Docker has proper permissions
+
+4. **Babel/Decorator Issues**:
+   - Ensure all Babel dependencies are installed: `npm install`
+   - Check `.babelrc` configuration for TypeORM decorator support
+   - Verify Node.js version compatibility (>=18.x)
 
 For more troubleshooting, see [DOCKER.md](DOCKER.md).
 

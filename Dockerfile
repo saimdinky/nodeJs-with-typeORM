@@ -1,5 +1,8 @@
-# Use Node.js 18 LTS as base image
-FROM node:18-alpine
+# Use Node.js 20 LTS as base image with latest security patches
+FROM node:20-alpine
+
+# Update Alpine packages for security patches
+RUN apk update && apk upgrade
 
 # Set working directory inside container
 WORKDIR /app
@@ -7,8 +10,8 @@ WORKDIR /app
 # Copy package.json and package-lock.json first (for better caching)
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev dependencies for Babel)
+RUN npm ci
 
 # Copy application code
 COPY . .
@@ -23,10 +26,6 @@ USER nodejs
 
 # Expose the port the app runs on
 EXPOSE 3000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node healthcheck.js || exit 1
 
 # Start the application
 CMD ["npm", "start"] 
